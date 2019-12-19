@@ -30,5 +30,6 @@ cd TMNet
 conda create --name tmnet python=3.7
 source activate tmnet
 pip install pandas visdom
-
+cd ./extension
+python setup.py install
 ```
