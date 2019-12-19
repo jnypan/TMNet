@@ -97,6 +97,7 @@ class ShapeNet(data.Dataset):
         name = fn[3]
         if self.SVR:
             files = glob.glob(os.path.join(fn[0], '*.%s' % self.extension))
+            files = sorted(files)
             if self.train:
                 idx_img = np.random.randint(0, len(files) - 1)
             else:

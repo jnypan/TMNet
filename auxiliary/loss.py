@@ -36,7 +36,7 @@ def get_edge_loss_stage1(vertices,edge):
     return edge_loss
 
 
-def get_normal_loss(vertices,faces,GT_normals,idx2):
+def get_normal_loss(vertices, faces, gt_normals, idx2):
     idx2 = idx2.type(torch.cuda.LongTensor).detach()
     edges = torch.cat((faces[:,:,:2],faces[:,:,[0,2]],faces[:,:,1:]),1)
     edges_vertices = vertices.index_select(1,edges.view(-1)).\
@@ -46,15 +46,15 @@ def get_normal_loss(vertices,faces,GT_normals,idx2):
     edges_len1 = edges_vertices[:,:,0] - edges_vertices[:,:,1]
     edges_len2 = edges_vertices[:,:,1] - edges_vertices[:,:,0]
     edges_vector = torch.stack((edges_len1,edges_len2),2)
-    GT_normals = GT_normals.index_select(1,idx2.contiguous().view(-1)).contiguous().view(GT_normals.size(0)*idx2.size(0),
-                                                                                         idx2.size(1),GT_normals.size(2))
-    GT_normals = GT_normals.index_select(0,indices)
-    GT_normals_edges = GT_normals.index_select(1,edges.view(-1)).view(GT_normals.size(0)*edges.size(0),
-                                                                      edges.size(1),edges.size(2),GT_normals.size(2))
-    GT_normals_edges = GT_normals_edges.index_select(0,indices)
-    GT_normals_edges = normalize(GT_normals_edges,p=2,dim=3)
+    gt_normals = gt_normals.index_select(1, idx2.contiguous().view(-1)).contiguous().view(gt_normals.size(0) * idx2.size(0),
+                                                                                          idx2.size(1), gt_normals.size(2))
+    gt_normals = gt_normals.index_select(0, indices)
+    gt_normals_edges = gt_normals.index_select(1, edges.view(-1)).view(gt_normals.size(0) * edges.size(0),
+                                                                       edges.size(1), edges.size(2), gt_normals.size(2))
+    gt_normals_edges = gt_normals_edges.index_select(0, indices)
+    gt_normals_edges = normalize(gt_normals_edges, p=2, dim=3)
     edges_vector = normalize(edges_vector,p=2,dim=3)
-    cosine = torch.abs(torch.sum(torch.mul(edges_vector,GT_normals_edges),3))
+    cosine = torch.abs(torch.sum(torch.mul(edges_vector, gt_normals_edges), 3))
     nonzero = len(cosine.nonzero())
     normal_loss = torch.sum(cosine)/nonzero
 
