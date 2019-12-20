@@ -33,3 +33,14 @@ pip install pandas visdom
 cd ./extension
 python setup.py install
 ```
+
+# Training
+
+### Data 
+
+We used the [ShapeNet](https://www.shapenet.org/) dataset for 3D models, and rendered views from [3D-R2N2](https://github.com/chrischoy/3D-R2N2):
+
+When using the provided data make sure to respect the shapenet [license](https://shapenet.org/terms).
+
+* [The ShapeNet point clouds (*.mat)](https://drive.google.com/file/d/1Z0d8W4PJnWIoCqt1jM4ziSFd1tgBUHa6/view?usp=sharing) go in ``` data/customShapeNet_mat```
+* [the rendered views (*.png)](https://drive.google.com/file/d/1eu2-Qm6T9AhjDkKP6IY-G__ti1N37VBr/view?usp=sharing) go in ``` data/ShapeNetRendering```
