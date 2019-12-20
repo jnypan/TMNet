@@ -58,8 +58,10 @@ python generate.py --model $model_path
 ```
 
 # Evaluation results
+The evaluation is based on 2,048 ground truth points and 2,048 points [uniformly sampled](http://rodolphe-vaillant.fr/?e=37) from the generated meshes. The CD is multiplied by 1,000 and the EMD is multiplied by 100. The threshold for F-score is
+set to be 0.002.
 
-| Method | Chamfer |EMD |F-score|
+| Chair | CD |EMD |F-score|
 | ---------- | --------------------- | --------------------- | --------------------- |
 | OccNet     | 6.647               | 13.266  |69.08|
 | AtlasNet | 5.415 | 12.106 |70.51|
