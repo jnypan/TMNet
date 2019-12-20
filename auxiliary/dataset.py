@@ -13,8 +13,8 @@ import glob
 
 class ShapeNet(data.Dataset):
     def __init__(self,
-                 rootimg='/media/data2/pan.data/ShapeNet/ShapeNetRendering',
-                 rootpc="/media/data2/pan.data/customShapeNet_mat",
+                 rootimg='./data/ShapeNet/ShapeNetRendering',
+                 rootpc="./data/customShapeNet_mat",
                  class_choice = "chair",
                  train = True, npoints = 2500, normal = False,
                  SVR=False, idx=0, extension = 'png'):

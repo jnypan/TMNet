@@ -67,7 +67,7 @@ def get_edges(faces):
     return edge_cuda
 
 
-def get_selected_pair(faces):
+def get_boundary(faces):
     vertices_number = faces.max().item() + 1
 
     triangles_new = faces.cpu().data.numpy()
@@ -174,25 +174,26 @@ def get_boundary_points_bn(faces_cuda_bn, pointsRec_refined):
 
     for bn in torch.arange(0, faces_cuda_bn.shape[0]):
         faces_each = faces_cuda_bn[bn]
-        selected_pair, boundary_point, _ = get_selected_pair(faces_each)
+        selected_pair, boundary_point, _ = get_boundary(faces_each)
         selected_pair_all.append(selected_pair)
         selected_pair_all_len.append(len(selected_pair))
         boundary_points_all.append(boundary_point)
         boundary_points_all_len.append(len(boundary_point))
+
     max_len = np.array(selected_pair_all_len).max()
     max_len2 = np.array(boundary_points_all_len).max()
     for bn in torch.arange(0, faces_cuda_bn.shape[0]):
         if len(selected_pair_all[bn]) < max_len:
-            lencat = max_len - len(selected_pair_all[bn])
-            tensorcat = torch.zeros(lencat, 3).type_as(selected_pair_all[bn])
-            selected_pair_all[bn] = torch.cat((selected_pair_all[bn], tensorcat), 0)
+            len_cat = max_len - len(selected_pair_all[bn])
+            tensor_cat = torch.zeros(len_cat, 3).type_as(selected_pair_all[bn])
+            selected_pair_all[bn] = torch.cat((selected_pair_all[bn], tensor_cat), 0)
         if len(boundary_points_all[bn]) < max_len2:
-            lencat = max_len2 - len(boundary_points_all[bn])
+            len_cat = max_len2 - len(boundary_points_all[bn])
             if len(boundary_points_all[bn]) > 0:
-                tensorcat = torch.Tensor(lencat).fill_(boundary_points_all[bn][0]).type_as(boundary_points_all[bn])
+                tensor_cat = torch.Tensor(len_cat).fill_(boundary_points_all[bn][0]).type_as(boundary_points_all[bn])
             else:
-                tensorcat = torch.zeros(lencat).type_as(boundary_points_all[bn])
-            boundary_points_all[bn] = torch.cat((boundary_points_all[bn], tensorcat), 0)
+                tensor_cat = torch.zeros(len_cat).type_as(boundary_points_all[bn])
+            boundary_points_all[bn] = torch.cat((boundary_points_all[bn], tensor_cat), 0)
 
     selected_pair_all = torch.stack(selected_pair_all, 0)
     selected_pair_all_len = np.array(selected_pair_all_len)
@@ -229,7 +230,7 @@ def prune(faces_cuda_bn, error, tau, index, pool='max', faces_number=5120):
     faces_cuda_set = []
     for k in torch.arange(0, error.size(0)):
         faces_cuda = faces_cuda_bn[k]
-        _, _, boundary_edge = get_selected_pair(faces_cuda)
+        _, _, boundary_edge = get_boundary(faces_cuda)
         boundary_edge_point = boundary_edge.astype(np.int64).reshape(-1)
         counts = pd.value_counts(boundary_edge_point)
         toremove_point = torch.from_numpy(np.array(counts[counts > 2].index)).cuda()
