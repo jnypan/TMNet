@@ -46,3 +46,17 @@ When using the provided data make sure to respect the shapenet [license](https:/
 * [the rendered views (*.png)](https://drive.google.com/file/d/1eu2-Qm6T9AhjDkKP6IY-G__ti1N37VBr/view?usp=sharing) go in ``` data/ShapeNetRendering```
 
 # Usage
+
+### Train
+```
+bash train/train.sh
+```
+
+### Generate
+```
+python generate.py --model $model_path
+```
+
+# Evaluation results
+
+
