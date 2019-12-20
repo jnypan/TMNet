@@ -59,4 +59,8 @@ python generate.py --model $model_path
 
 # Evaluation results
 
-
+| Method | Chamfer |EMD |F-score|
+| ---------- | --------------------- | --------------------- | --------------------- |
+| OccNet     | 6.647               | 13.266  |69.08|
+| AtlasNet | 5.415 | 12.106 |70.51|
+| Ours     | 4.850 |11.256|73.72|
