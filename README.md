@@ -1,7 +1,6 @@
 # TMNet
 This repository contains the source codes for the paper 
 [Deep Mesh Reconstruction from Single RGB Images via Topology Modification Networks](https://arxiv.org/abs/1909.00321).
-As we reorganized our code based on new python and pytorch versions, some hyper-parameters and results are slightly different from the paper.
 
 ### Citing this work
 
