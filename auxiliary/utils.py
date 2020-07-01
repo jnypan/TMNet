@@ -215,7 +215,7 @@ def prune(faces_cuda_bn, error, tau, index, pool='max', faces_number=5120):
     index_1d = (index + (torch.arange(0, error.size(0)).unsqueeze(1).
                          expand_as(index) * faces_cuda_bn.size(1)).type(torch.cuda.LongTensor)).view(-1)
     face_error = zeros.index_add_(0, index_1d, error.view(-1)).view(error.size(0), faces_cuda_bn.size(1))
-    face_count = zeros.index_add(0, index_1d, ones.view(-1)).view(error.size(0), faces_cuda_bn.size(1))
+    face_count = zeros.index_add_(0, index_1d, ones.view(-1)).view(error.size(0), faces_cuda_bn.size(1))
     faces_cuda_bn = faces_cuda_bn.clone()
 
     if pool == 'mean':
